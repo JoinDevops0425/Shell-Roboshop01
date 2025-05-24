@@ -34,6 +34,55 @@ VALIDATE(){
     fi    
 }
 
+NODEJS_SETUP(){
+    dnf module disable nodejs -y &>>LOG_FILE
+    VALIDATE $? "Disabling Nodejs Default version"
+
+    dnf module enable nodejs:20 -y &>>LOG_FILE
+    VALIDATE $? "Enablling Nodejs version 20"
+
+    dnf install nodejs -y &>>LOG_FILE
+    VALIDATE $? "Installing Nodejs"
+
+    npm install &>>LOG_FILE
+    VALIDATE $? "Installing Nodejs dependencies"
+}
+
+
+APP_SETUP(){
+    mkdir -p /opt/app
+    VALIDATE $? "Creating App Directory"
+
+    curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$$app_name-v3.zip 
+    VALIDATE $? "Downloading $app_name.zip"
+
+    rm -rf /opt/app/*
+
+    cd /opt/app
+    unzip /tmp/$app_name.zip &>>LOG_FILE
+    VALIDATE $? "Unzipping $app_name.zip"
+
+    id roboshop 
+    if [ $? -ne 0 ]
+    then 
+        useradd --system --home /opt/app --shell /sbin/nologin --comment "System User" roboshop
+        VALIDATE $? "Creating roboshop user"
+    else 
+        echo "User Roboshop already exixts"
+    fi
+
+}
+
+SYSTEMD_SETUP(){
+    cp $SCRIPT_DIR/$app_name.service /etc/systemd/system/$app_name.service
+    VALIDATE $? "Copying $app_name.service file"
+
+    systemctl daemon-reload &>>$LOG_FILE
+    systemctl enable $app_name &>>$LOG_FILE
+    systemctl start $app_name &>>$LOG_FILE
+    VALIDATE $? "Enabling and starting $app_name service"
+}
+
 PRINT_TIME(){
     END_TIME=$(date +%s)
     DIFF=$(($END_TIME - $START_TIME))
