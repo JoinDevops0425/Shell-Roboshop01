@@ -67,6 +67,18 @@ PYTHON_SETUP(){
     VALIDATE $? "Installing the requirements"
 }
 
+GOLANG_SETUP(){
+    dnf install golang -y &>>$LOG_FILE
+    VALIDATE $? "Installing golang"
+
+    go mod init dispatch &>>$LOG_FILE
+    VALIDATE $? "Initializing the go module"
+    go get &>>$LOG_FILE
+    VALIDATE $? "Getting the go modules"
+    go build &>>$LOG_FILE
+    VALIDATE $? "Building the go module"
+}
+
 
 APP_SETUP(){
     mkdir -p /opt/app
