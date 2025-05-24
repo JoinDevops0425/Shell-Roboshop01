@@ -59,7 +59,7 @@ APP_SETUP(){
     rm -rf /opt/app/*
 
     cd /opt/app
-    unzip /tmp/$app_name.zip &>>LOG_FILE
+    unzip /tmp/$app_name.zip &>>"$LOG_FILE"
     VALIDATE $? "Unzipping $app_name.zip"
 
     id roboshop 
