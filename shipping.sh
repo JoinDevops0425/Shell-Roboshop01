@@ -3,6 +3,7 @@ source ./common.sh
 CHECK_ROOT
 app_name="shipping"
 APP_SETUP
+MAVEN_SETUP
 SYSTEMD_SETUP
 
 dnf install mysql -y &>>$LOG_FILE
