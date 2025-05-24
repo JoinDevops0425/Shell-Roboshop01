@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ./common.sh
-app_name="user"
+app_name="cart"
 
 CHECK_ROOT
 APP_SETUP
