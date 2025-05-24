@@ -59,6 +59,14 @@ MAVEN_SETUP(){
     VALIDATE $? "Renaming the shipping jar file"
 }
 
+PYTHON_SETUP(){
+    dnf install python3 gcc python3-devel -y &>>$LOG_FILE
+    VALIDATE $? "Installing python3 and gcc"
+
+    pip3 install -r requirements.txt &>>$LOG_FILE
+    VALIDATE $? "Installing the requirements"
+}
+
 
 APP_SETUP(){
     mkdir -p /opt/app
