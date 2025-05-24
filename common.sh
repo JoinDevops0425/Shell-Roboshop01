@@ -49,6 +49,16 @@ NODEJS_SETUP(){
     VALIDATE $? "Installing Nodejs dependencies"
 }
 
+MAVEN_SETUP(){
+    dnf install maven -y &>>$LOG_FILE
+    VALIDATE $? "Installing Maven"
+
+    mvn clean package &>>$LOG_FILE
+    VALIDATE $? "Packaging the shipping application"
+    mv target/shipping-1.0.jar shipping.jar &>>$LOG_FILE
+    VALIDATE $? "Renaming the shipping jar file"
+}
+
 
 APP_SETUP(){
     mkdir -p /opt/app
