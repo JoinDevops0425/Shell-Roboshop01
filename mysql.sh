@@ -14,4 +14,4 @@ VALIDATE $? "Starting MySQL Server"
 mysql_secure_installation --set-root-pass RoboShop@1 &>>$LOG_FILE
 VALIDATE $? "Setting MySQL root password"
 
-PRITN_TIME
+PRINT_TIME
